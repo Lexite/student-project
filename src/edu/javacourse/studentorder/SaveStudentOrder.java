@@ -5,9 +5,9 @@ import edu.javacourse.studentorder.domain.StudentOrder;
 
 public class SaveStudentOrder {
     public static void main(String[] args) {
-        StudentOrder so = new StudentOrder();
-        buildStudentOrder(15);
+        StudentOrder so = buildStudentOrder(10);
 
+        //StudentOrder so = new StudentOrder();
         //long ans = saveStudentOrder(so);
         //System.out.println(ans);
     }
@@ -17,10 +17,18 @@ public class SaveStudentOrder {
         return answer;
     }
 
-    static StudentOrder buildStudentOrder(long id){
+
+
+    public static StudentOrder buildStudentOrder(long id){
         StudentOrder so = new StudentOrder();
         so.setStudentOrderId(id);
+        StudentOrder so1 = so;
+        printStudentOrder(so1);
 
         return so;
+    }
+
+    static void printStudentOrder(StudentOrder stOr){
+        System.out.println(stOr.getStudentOrderId());
     }
 }
