@@ -1,15 +1,18 @@
 package edu.javacourse.studentorder;
 
 import edu.javacourse.studentorder.domain.StudentOrder;
-import edu.javacourse.studentorder.domain.AnswerCityRegister;
-import edu.javacourse.studentorder.domain.AnswerChildren;
-import edu.javacourse.studentorder.domain.AnswerWedding;
-import edu.javacourse.studentorder.domain.AnswerStudent;
+import edu.javacourse.studentorder.domain.register.AnswerCityRegister;
+import edu.javacourse.studentorder.domain.children.AnswerChildren;
+import edu.javacourse.studentorder.domain.wedding.AnswerWedding;
+import edu.javacourse.studentorder.domain.student.AnswerStudent;
 import edu.javacourse.studentorder.mail.MailSender;
 import edu.javacourse.studentorder.validator.ChildrenValidator;
 import edu.javacourse.studentorder.validator.CityRegisterValidator;
 import edu.javacourse.studentorder.validator.StudentValidator;
 import edu.javacourse.studentorder.validator.WeddingValidator;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class StudentOrderValidator {
@@ -31,26 +34,22 @@ public class StudentOrderValidator {
         StudentOrderValidator sov = new StudentOrderValidator();
         sov. checkAll();
     }
-    public void checkAll(){
-            StudentOrder[] soArray = readStudentOrders();
-            //for (int c = 0; c < soArray.length; c++){
-            //    System.out.println();
-            //    checkOneOrder(soArray[c]);
-            //}
+    public void checkAll() {
 
-            for (StudentOrder so : soArray){
-                System.out.println();
-                checkOneOrder(so);
-            }
-    }
-    public StudentOrder[] readStudentOrders(){
-        StudentOrder[] soArray = new StudentOrder[3];
-
-        for (int c = 0; c < soArray.length; c++){
-            soArray[c] = SaveStudentOrder.buildStudentOrder(c);
-
+        List<StudentOrder> soList = readStudentOrders();
+        for (StudentOrder so : soList){
+            checkOneOrder(so);
         }
-        return soArray;
+
+    }
+
+    public List<StudentOrder> readStudentOrders(){
+        List<StudentOrder> soList = new LinkedList<>();
+        for (int i = 0; i < 5; i ++){
+            StudentOrder so = SaveStudentOrder.buildStudentOrder(i);
+            soList.add(so);
+        }
+        return soList;
 
     }
     public void checkOneOrder(StudentOrder so){
