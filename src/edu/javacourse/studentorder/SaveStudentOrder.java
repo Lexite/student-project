@@ -4,11 +4,35 @@ import edu.javacourse.studentorder.domain.Address;
 import edu.javacourse.studentorder.domain.Adult;
 import edu.javacourse.studentorder.domain.Child;
 import edu.javacourse.studentorder.domain.StudentOrder;
+import org.postgresql.Driver;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDate;
 
 public class SaveStudentOrder {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+
+        //Class.forName("org.postgresql.Driver");
+
+        String url = "jdbc:postgresql://localhost:5432/jc_student";
+        String user = "postgres";
+        String password = "postgres";
+
+        Connection con = DriverManager.getConnection(url, user, password);
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM jc_street");
+        while (rs.next()){
+            System.out.println(rs.getLong(1) + ":" + rs.getString(2));
+        }
+
+
+
+
+
         StudentOrder so = buildStudentOrder(10);
 
         //StudentOrder so = new StudentOrder();
