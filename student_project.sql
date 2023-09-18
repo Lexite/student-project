@@ -65,7 +65,7 @@ CREATE TABLE jc_student_order
     w_passport_date date not null,
     w_passport_office_id integer not null,
     w_post_index varchar(10),
-    w_street_tcode integer not null,
+    w_street_code integer not null,
     w_building varchar(10) not null,
     w_extension varchar(10),
     w_apartment varchar(10),
@@ -76,7 +76,7 @@ CREATE TABLE jc_student_order
 
     PRIMARY KEY (student_order_id),
     FOREIGN KEY (h_street_code) REFERENCES jc_street(street_code) ON DELETE RESTRICT,
-    FOREIGN KEY (w_street_tcode) REFERENCES jc_street(street_code) ON DELETE RESTRICT,
+    FOREIGN KEY (w_street_code) REFERENCES jc_street(street_code) ON DELETE RESTRICT,
     FOREIGN KEY (register_office_id) REFERENCES jc_register_office(r_office_id) ON DELETE RESTRICT
 
 );
