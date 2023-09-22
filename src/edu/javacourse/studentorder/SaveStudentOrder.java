@@ -13,11 +13,20 @@ import java.util.List;
 public class SaveStudentOrder {
     public static void main(String[] args) throws Exception {
 
-        List<Street> d = new DictionaryDaoImpl().findStreets("d");
+        List<Street> d = new DictionaryDaoImpl().findStreets("про");
         for (Street s : d){
             System.out.println(s.getStreetName());
         }
 
+        List<PassportOffice> po = new DictionaryDaoImpl().findPassportOffices("010020000000");
+        for (PassportOffice p : po){
+            System.out.println(p.getOfficeName());
+        }
+
+        List<RegisterOffice> ro = new DictionaryDaoImpl().findRegisterOffices("010010000000");
+        for (RegisterOffice r : ro){
+            System.out.println(r.getOfficeName());
+        }
 
 
 
@@ -40,7 +49,8 @@ public class SaveStudentOrder {
         so.setStudentOrderId(id);
         so.setMarriageCertificateId("" + (123456000 + id));
         so.setMarriageDate(LocalDate.of(2023,7,4));
-        so.setMarriageOffice("Отдел ЗАГС");
+        RegisterOffice ro = new RegisterOffice(1L,"","");
+        so.setMarriageOffice(ro);
 
         Street street = new Street(1L, "First street");
 
@@ -51,7 +61,8 @@ public class SaveStudentOrder {
         husband.setPassportNumber("" + (1000+id));
         husband.setPassportSeria("" + (100000 + id));
         husband.setIssueDate(LocalDate.of(2017,9,15));
-        husband.setIssueDepartment("Отдел милиции номер" + id);
+        PassportOffice po1 = new PassportOffice(1L,"","");
+        husband.setIssueDepartment(po1);
         husband.setStudentID("" + (100000 + id));
         husband.setAddress(address);
 
@@ -60,7 +71,8 @@ public class SaveStudentOrder {
         wife.setPassportNumber("" + (2000+id));
         wife.setPassportSeria("" + (200000 + id));
         wife.setIssueDate(LocalDate.of(2018,4,5));
-        wife.setIssueDepartment("Отдел милиции номер" + id);
+        PassportOffice po2 = new PassportOffice(2L,"","");
+        wife.setIssueDepartment(po2);
         wife.setStudentID("" + (200000 + id));
         wife.setAddress(address);
 
@@ -68,13 +80,14 @@ public class SaveStudentOrder {
         Child child1 = new Child("Петрова","Ирина","Викторовна",LocalDate.of(2018,6,29));
         child1.setCertificateNumber("" + (3000 + id));
         child1.setIssueDate(LocalDate.of(2018,7,19));
-        child1.setIssueDepartment("Отдел ЗАГС номер" + id);
+        RegisterOffice ro2 = new RegisterOffice(2L,"","");
         child1.setAddress(address);
 
         Child child2 = new Child("Петрова","Евгений","Викторович",LocalDate.of(2018,6,29));
         child2.setCertificateNumber("" + (4000 + id));
         child2.setIssueDate(LocalDate.of(2018,7,19));
-        child2.setIssueDepartment("Отдел ЗАГС номер" + id);
+        RegisterOffice ro3 = new RegisterOffice(3L,"","");
+        child2.setIssueDepartment(ro3);
         child2.setAddress(address);
 
         so.setHusband(husband);
