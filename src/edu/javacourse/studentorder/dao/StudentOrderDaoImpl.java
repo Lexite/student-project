@@ -81,7 +81,9 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
                 stmt.setLong(1, soId);
                 setParamsForChild(stmt,child);
                 stmt.executeUpdate();
-            }
+                stmt.addBatch();
+                }
+                stmt.executeBatch();
         }
     }
     private void setParamsForAdult(PreparedStatement stmt, int start, Adult adult) throws SQLException {
