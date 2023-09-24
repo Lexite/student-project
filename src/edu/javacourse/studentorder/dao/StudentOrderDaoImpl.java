@@ -33,6 +33,11 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
         Long result = -1L;
         try (Connection con = getConnection()) {
             PreparedStatement stmt = con.prepareStatement(INSERT_ORDER, new String[] {"student_order_id"});
+
+            con.setAutoCommit(false);
+
+            try {
+
             //Header
             stmt.setInt(1, StudentOrderStatus.START.ordinal());
             stmt.setTimestamp(2,java.sql.Timestamp.valueOf(LocalDateTime.now()));
@@ -55,6 +60,12 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             gkRs.close();
 
             saveChildren(con, so, result);
+            con.commit();
+            }
+            catch (SQLException ex){
+                con.rollback();
+                throw ex;
+            }
 
 
         }
