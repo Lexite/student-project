@@ -2,7 +2,7 @@ package edu.javacourse.studentorder.domain;
 
 import java.time.LocalDate;
 
-public abstract class Person {
+public abstract class  Person {
     private String surName;
     private String givenName;
     private String patronymic;
