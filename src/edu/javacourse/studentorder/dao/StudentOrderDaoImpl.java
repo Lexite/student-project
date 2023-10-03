@@ -6,6 +6,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentOrderDaoImpl implements StudentOrderDao {
     private static final String INSERT_ORDER =
@@ -37,8 +38,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             "select soc.*, ro.r_office_area_id, r_office_name " +
                     "from jc_student_child soc " +
                     "inner join jc_register_office ro ON soc.c_register_office_id = ro.r_office_id " +
-                    "where soc.student_order_id in ? " +
-                    "order by student_order_id";
+                    "where soc.student_order_id in ";
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
@@ -170,12 +170,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
                 ids.add(so.getStudentOrderId());
             }
 
-            StringBuilder sb = new StringBuilder("(");
-            for (Long id : ids){
-                sb.append((sb.length()>1 ? "," : "") + String.valueOf(id));
-            }
-            sb.append(")");
-            System.out.println(sb.toString());
+            findChildren(con, result);
 
             rs.close();
         }
@@ -186,6 +181,18 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
 
 
         return result;
+    }
+
+    private void findChildren(Connection con, List<StudentOrder> result) throws SQLException {
+        String cl = "(" + result.stream().map(so ->String.valueOf(so.getStudentOrderId())).
+                collect(Collectors.joining(",")) + ")";
+
+        try(PreparedStatement stmt = con.prepareStatement(SELECT_CHILD + cl)){
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                System.out.println(rs.getLong(1) + ": "  + rs.getString(3));
+            }
+        }
     }
 
     public Adult fillAdult(ResultSet rs, String pref) throws SQLException {
