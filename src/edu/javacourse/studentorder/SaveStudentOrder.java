@@ -47,15 +47,17 @@ public class SaveStudentOrder {
 //        }
 
 
-        StudentOrder s = buildStudentOrder(10);
+       // StudentOrder s = buildStudentOrder(10);
         StudentOrderDao dao = new StudentOrderDaoImpl();
-        Long id = dao.saveStudentOrder(s);
-        System.out.println(id);
-
+       // Long id = dao.saveStudentOrder(s);
+       // System.out.println(id);
+//
         List<StudentOrder> soList = dao.getStudentOrders();
         for (StudentOrder so : soList) {
             System.out.println(so.getStudentOrderId());
         }
+
+
 
 
 //        StudentOrder so = new StudentOrder();
@@ -89,22 +91,22 @@ public class SaveStudentOrder {
         husband.setIssueDate(LocalDate.of(2017,9,15));
         PassportOffice po1 = new PassportOffice(1L,"","");
         husband.setIssueDepartment(po1);
-        husband.setStudentID("" + (100000 + id));
+        husband.setStudentId("" + (100000 + id));
         husband.setAddress(address);
         husband.setUniversity(new University(2L,""));
-        husband.setStudentID("HH12345");
+        husband.setStudentId("HH12345");
 
         //Жена
-        Adult wife = new Adult("Петров", "Виктор", "Сергеевич", LocalDate.of(1997,02,24));
+        Adult wife = new Adult("Петрова", "Александра", "Федоровна", LocalDate.of(1997,02,24));
         wife.setPassportNumber("" + (2000+id));
         wife.setPassportSeria("" + (200000 + id));
         wife.setIssueDate(LocalDate.of(2018,4,5));
         PassportOffice po2 = new PassportOffice(2L,"","");
         wife.setIssueDepartment(po2);
-        wife.setStudentID("" + (200000 + id));
+        wife.setStudentId("" + (200000 + id));
         wife.setAddress(address);
         wife.setUniversity(new University(1L,""));
-        wife.setStudentID("WW12345");
+        wife.setStudentId("WW12345");
         //Ребенок
         Child child1 = new Child("Петрова","Ирина","Викторовна",LocalDate.of(2018,6,29));
         child1.setCertificateNumber("" + (3000 + id));
