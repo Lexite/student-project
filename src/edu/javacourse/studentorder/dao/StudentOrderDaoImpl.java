@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static edu.javacourse.studentorder.config.Config.DB_LIMIT;
+
 public class StudentOrderDaoImpl implements StudentOrderDao {
     private static final String INSERT_ORDER =
             "insert into jc_student_order ( student_order_status, student_order_date, h_sur_name, h_given_name," +
@@ -35,7 +37,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
                     "inner join jc_register_office ro on so.register_office_id = ro.r_office_id " +
                     "inner join jc_passport_office po_h on so.h_passport_office_id = po_h.p_office_id " +
                     "inner join jc_passport_office po_w on so.w_passport_office_id = po_w.p_office_id " +
-                    "where student_order_status = ? order by student_order_date; ";
+                    "where student_order_status = ? order by student_order_date LIMIT ?";
 
     private static final String SELECT_CHILD =
             "select soc.*, ro.r_office_area_id, r_office_name " +
@@ -44,7 +46,6 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
                     "where soc.student_order_id in ";
 
     private static final String SELECT_ORDERS_FULL =
-
                     "select  so.*, ro.r_office_area_id, ro.r_office_name, " +
                     "po_h.p_office_area_id as h_p_office_area_id, " +
                     "po_h.p_office_name as h_p_office_name, " +
@@ -57,7 +58,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
                     "inner join jc_passport_office po_w on po_w.p_office_id = so.w_passport_office_id " +
                     "inner join jc_student_child soc ON soc.student_order_id = so.student_order_id " +
                     "inner join jc_register_office ro_c ON ro_c.r_office_id = soc.c_register_office_id " +
-                    "where student_order_status = ? order by student_order_date; ";
+                    "where student_order_status = ? order by so.student_order_id LIMIT ?";
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
@@ -176,8 +177,12 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
             Map<Long, StudentOrder> maps = new HashMap<>();
 
             stmt.setInt(1,StudentOrderStatus.START.ordinal());
+            int limit = Integer.parseInt(Config.getProperty(Config.DB_LIMIT));
+            stmt.setInt(2, limit);
 
             ResultSet rs = stmt.executeQuery();
+
+            int counter = 0;
 
             while (rs.next()){
                 Long soId = rs.getLong("student_order_id");
@@ -189,8 +194,12 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
                 }
                 StudentOrder so = maps.get(soId);
                 so.addChild(fillChild(rs));
+                counter++;
             }
+            if (counter >= limit) {
+                result.remove(result.size() - 1);
 
+            }
 
             rs.close();
         }
@@ -208,6 +217,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao {
              PreparedStatement stmt = con.prepareStatement(SELECT_ORDERS)){
 
             stmt.setInt(1,StudentOrderStatus.START.ordinal());
+            stmt.setInt(2,Integer.parseInt(Config.getProperty(DB_LIMIT)));
 
             ResultSet rs = stmt.executeQuery();
 
